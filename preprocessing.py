@@ -1,14 +1,32 @@
-import numpy as np
-import pandas as pd
-import sklearn
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 
-test_path = 'data/test.csv'
-train_path = 'data/train.csv'
+# Input data files are available in the "../input/" directory.
+# For example, running this (by clicking run or pressing Shift+Enter) will list the files in the input directory
 
-train = pd.read_csv(train_path)
-test = pd.read_csv(test_path)
+from subprocess import check_output
+print(check_output(["ls", "data"]).decode("utf8"))
 
-from sklearn.feature_selection import chi2, f_regression, f_classif, mutual_info_classif,\
-mutual_info_regression 
-from sklearn.feature_selection import SelectKBest, SelectFromModel, VarianceThreshold
-from sklearn import preprocessing
+# Any results you write to the current directory are saved as output.
+
+# for visualization
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# import data
+train = pd.read_csv('data/train.csv')
+test = pd.read_csv('data/test.csv')
+
+for i in range(train.shape[1]):
+	if(train.iloc[:,i].isnull().sum()>0):
+		print(list(train.columns.values)[i] + ": " + str(train.iloc[:,i].isnull().sum()))
+
+ax = sns.distplot(train['SalePrice'])
+plt.show()
+
+train['SalePrice'] = np.log(train['SalePrice'])
+
+ax = sns.distplot(train['SalePrice'])
+plt.show()
+
+print(train.shape[0])
